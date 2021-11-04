@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  # Reference:  https://medium.com/analytics-vidhya/getting-started-with-postgresql-using-docker-compose-34d6b808c47c
+  postgres:
+    image: "postgis/postgis:12-2.5-alpine" # use latest official postgres version
+    env_file:
+      - ./postgres.env # configure postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+
+  personsapi:
+    build: personsapi
+    command: ["flask", "run", "--host=0.0.0.0"]
+    env_file:
+      - ./postgres.env # configure postgres
+    volumes:
+      - ./personsapi:/services
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app/__init__.py
+    ports:
+      - "30004:5000"
+
+  locationsapi:
+    build: locationsapi
+    env_file:
+      - ./postgres.env # configure postgres
+    command: ["flask", "run", "--host=0.0.0.0"]
+    volumes:
+      - ./locationsapi:/services
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app/__init__.py
+    ports:
+      - "30003:5000"
+
+  connectionsapi:
+    build: connectionsapi
+    env_file:
+      - ./postgres.env # configure postgres
+    command: ["flask", "run", "--host=0.0.0.0"]
+    volumes:
+      - ./connectionsapi:/services
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app/__init__.py
+    ports:
+      - "30002:5000"
+
+  frontend:
+    tty: true
+    build: frontend
+    command: ["npm", "start"]
+    volumes:
+      - ./frontend:/frontend
+      - node-modules:/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "30000:3000"
+    depends_on:
+      - personsapi
+      - locationsapi
+      - connectionsapi
+
+volumes:
+  node-modules:
+  postgres-data:
+
+networks:
+  app-tier:

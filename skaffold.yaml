@@ -1,0 +1,51 @@
+apiVersion: skaffold/v2beta24
+kind: Config
+metadata:
+  name: udaconnect-restapi
+build:
+  tagPolicy:
+    sha256: {}
+  local:
+    push: true
+    concurrency: 1
+    tryImportMissing: false
+    useDockerCLI: false
+  artifacts:
+    - image: gmj06/udaconnect-app
+      context: modules/frontend
+      docker:
+        dockerfile: Dockerfile
+    - image: gmj06/udaconnect-personsapi
+      context: modules/personsapi
+      docker:
+        dockerfile: Dockerfile
+    - image: gmj06/udaconnect-locationsapi
+      context: modules/locationsapi
+      docker:
+        dockerfile: Dockerfile
+    - image: gmj06/udaconnect-locationsapi-post
+      context: modules/locationsapi_post
+      docker:
+        dockerfile: Dockerfile
+    - image: gmj06/udaconnect-locationsapi-kafka
+      context: modules/locationsapi_post_db
+      docker:
+        dockerfile: Dockerfile
+    - image: gmj06/udaconnect-connectionsapi
+      context: modules/connectionsapi
+      docker:
+        dockerfile: Dockerfile
+
+deploy:
+  kubectl:
+    manifests:
+      - deployment/db-configmap.yaml
+      - deployment/db-secret.yaml
+      - deployment/postgres.yaml
+      - deployment/udaconnect-api.yaml
+      - deployment/udaconnect-app.yaml
+      - deployment/udaconnect-personsapi.yaml
+      - deployment/udaconnect-locationsapi.yaml
+      - deployment/udaconnect-connectionsapi.yaml
+      - deployment/udaconnect-kafka.yaml
+      # - deployment/udaconnect-grpc.yaml
