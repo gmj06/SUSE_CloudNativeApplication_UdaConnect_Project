@@ -42,7 +42,7 @@ def serve():
 
 if __name__ == '__main__':
     # Initialize Kafka Producer 
-    producer = KafkaProducer(bootstrap_servers=[KAFKA_SERVER], api_version=(2, 0, 2))
+    producer = KafkaProducer(bootstrap_servers=[KAFKA_SERVER], api_version=(0, 10, 2))
     print('Kafka Producer Started...')
     serve()
     

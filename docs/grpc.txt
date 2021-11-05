@@ -1,0 +1,10 @@
+The gRPC server can be run by execute the following command in the terminal/command prompt
+
+python3 modules/locationsapi_post/app/locations_grpc_server.python3
+
+This server listens at the port 5005
+While creating the location we pass the created object to KafkaProducer in this server code.
+
+To test sample location creation, run the following command in a new terminal/command prompt
+
+python3 modules/locationsapi_post/app/grpc_test_writer.py

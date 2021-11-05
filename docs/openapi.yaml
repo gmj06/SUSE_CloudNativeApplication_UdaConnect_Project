@@ -1,0 +1,105 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:30004
+    description: ""
+    variables: {}
+  - url: http://localhost:30003
+    description: ""
+    variables: {}
+  - url: http://localhost:30002
+    description: ""
+    variables: {}
+info:
+  version: daeb68eb-4adc-42df-ae46-d8705dc4819f
+  title: UdaConnect
+  description: ""
+  termsOfService: ""
+  contact: {}
+  license:
+    name: ""
+paths:
+  /api/persons:
+    get:
+      summary: Persons-GET
+      operationId: Persons-GET
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+    post:
+      summary: Persons-POST
+      operationId: Persons-POST
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                first_name: Gauri1
+                last_name: Deesh1
+                company_name: Noogle1
+            example: |-
+              {
+                  "first_name": "Gauri1",
+                  "last_name": "Deesh1",
+                  "company_name": "Noogle1"
+              }
+  /api/locations/40:
+    get:
+      summary: Locations-GET
+      operationId: Locations-GET
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+  /api/persons/5/connection:
+    get:
+      summary: Connections-GET
+      operationId: Connections-GET
+      parameters:
+        - $ref: "#/components/parameters/start_date"
+        - $ref: "#/components/parameters/end_date"
+        - $ref: "#/components/parameters/distance"
+      responses:
+        "200":
+          description: ""
+          headers: {}
+components:
+  parameters:
+    start_date:
+      name: start_date
+      in: query
+      required: true
+      style: form
+      schema:
+        type: string
+        example: "2020-01-01"
+    end_date:
+      name: end_date
+      in: query
+      required: true
+      style: form
+      schema:
+        type: string
+        example: "2020-12-30"
+    distance:
+      name: distance
+      in: query
+      required: true
+      style: form
+      schema:
+        type: number
+security: []
+tags: []
+externalDocs:
+  url: ""
+  description: ""
+warnings: []

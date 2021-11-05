@@ -1,0 +1,24 @@
+The Monolith application is changed to Microservices by splitting the API into Persons, Locations and Connections API.
+
+* Persons API (http://localhost:30004/)
+This is a service to retrieve (GET endpoints) and create (POST endpoints) Persons using REST. 
+As on increase of Persons not much impact on this service, we can  minimize the cost and development time by using REST API. 
+
+
+* Locations API (http://localhost:30003/)
+This is a service to collect all location details of a person. 
+As a person changes his/her location,  this data can grow larger and larger. 
+As a result, we have to separate this service into two services.
+    1. GET endpoint --  we can still use REST API as this service as it is linked to Persons API.  
+    2. POST endpoint -- At any point in time, need to create location details for a person(s).
+       On increase of Persons, this data increases tremendously. 
+       Hence, we can use Kafka message passing technique to capture and save the information to database.
+       As we cannot validate input data from REST API, best candidate here is to use gRPC using 
+       which we can validate the data before passing it to Kafka to save in database.
+
+
+* Connections API (http://localhost:30002/)
+This service is a part of Persons API to get all the connections for a person on a particular location.
+Hence, for this service also we can use REST API to minimize the cost and development time. 
+
+
