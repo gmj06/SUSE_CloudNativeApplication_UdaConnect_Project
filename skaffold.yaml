@@ -6,7 +6,7 @@ build:
   tagPolicy:
     sha256: {}
   local:
-    push: true
+    push: false
     concurrency: 1
     tryImportMissing: false
     useDockerCLI: false
